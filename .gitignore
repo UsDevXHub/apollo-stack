@@ -1,0 +1,28 @@
+# System
+.DS_Store
+Thumbs.db
+
+# Logs e temporários
+*.log
+*.swp
+*.tmp
+*.bak
+*.backup
+
+# Diretórios comuns de cache
+.cache/
+tmp/
+node_modules/
+vendor/
+
+# Arquivos de ambiente
+.env
+.env.*
+phpenv/
+
+# Outras proteções
+*.zip
+*.tar.gz
+
+
+
