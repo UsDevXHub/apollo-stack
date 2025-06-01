@@ -39,22 +39,24 @@ nvm alias default 'lts/*'
 # Instala PHP (phpenv + php-build)
 # -------------------------
 echo "🔧 Instalando phpenv e php-build..."
-if [ ! -d "$HOME/.phpenv" ]; then
-  git clone https://github.com/phpenv/phpenv.git ~/.phpenv
-  echo 'export PATH="$HOME/.phpenv/bin:$PATH"' >> ~/.bashrc
-  echo 'eval "$(phpenv init -)"' >> ~/.bashrc
-  export PATH="$HOME/.phpenv/bin:$PATH"
-  eval "$(phpenv init -)"
-fi
+if ! command -v phpenv &> /dev/null; then
+  if [ ! -d "$HOME/.phpenv" ]; then
+    git clone https://github.com/phpenv/phpenv.git ~/.phpenv
+    echo 'export PATH="$HOME/.phpenv/bin:$PATH"' >> ~/.bashrc
+    echo 'eval "$(phpenv init -)"' >> ~/.bashrc
+    export PATH="$HOME/.phpenv/bin:$PATH"
+    eval "$(phpenv init -)"
+  fi
 
-if [ ! -d "$(phpenv root)/plugins/php-build" ]; then
-  git clone https://github.com/php-build/php-build.git "$(phpenv root)/plugins/php-build"
-fi
+  if [ ! -d "$(phpenv root)/plugins/php-build" ]; then
+    git clone https://github.com/php-build/php-build.git "$(phpenv root)/plugins/php-build"
+  fi
 
-# Instala PHP 8.2.17 como exemplo
-sudo apt install -y libcurl4-openssl-dev libreadline-dev libedit-dev libsqlite3-dev libonig-dev libzip-dev libssl-dev libjpeg-dev libpng-dev libxpm-dev libfreetype6-dev libxml2-dev libicu-dev libbz2-dev libtidy-dev libxslt1-dev libargon2-dev libdb-dev pkg-config re2c bison autoconf
-PHP_BUILD_CONFIGURE_OPTS="--enable-phar" phpenv install 8.2.17
-phpenv global 8.2.17
+  # Instala PHP 8.2.17 como exemplo
+  sudo apt install -y libcurl4-openssl-dev libreadline-dev libedit-dev libsqlite3-dev libonig-dev libzip-dev libssl-dev libjpeg-dev libpng-dev libxpm-dev libfreetype6-dev libxml2-dev libicu-dev libbz2-dev libtidy-dev libxslt1-dev libargon2-dev libdb-dev pkg-config re2c bison autoconf
+  PHP_BUILD_CONFIGURE_OPTS="--enable-phar" phpenv install 8.2.17
+  phpenv global 8.2.17
+fi
 
 # -------------------------
 # Instala utilitários modernos
@@ -71,6 +73,7 @@ fi
 
 # Lazygit
 if ! command -v lazygit &> /dev/null; then
+  echo "🔧 Instalando Lazygit..."
   LAZYGIT_VERSION=$(curl -s https://api.github.com/repos/jesseduffield/lazygit/releases/latest | grep tag_name | cut -d '"' -f 4)
   curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION#v}_Linux_x86_64.tar.gz"
   tar xf lazygit.tar.gz lazygit
@@ -81,15 +84,16 @@ fi
 # -------------------------
 # Instala Neovim
 # -------------------------
-echo "🧠 Instalando Neovim..."
+if ! command -v nvim &> /dev/null; then
+  echo "🧠 Instalando Neovim..."
 
-NEOVIM_VERSION=$(curl -s https://api.github.com/repos/neovim/neovim/releases/latest | grep tag_name | cut -d '"' -f 4)
-curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
-sudo rm -rf /opt/nvim
-sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
-export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
-rm nvim-linux-x86_64.tar.gz
-
+  NEOVIM_VERSION=$(curl -s https://api.github.com/repos/neovim/neovim/releases/latest | grep tag_name | cut -d '"' -f 4)
+  curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+  sudo rm -rf /opt/nvim
+  sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
+  export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+  rm nvim-linux-x86_64.tar.gz
+fi
 # Verificação
 if command -v nvim &> /dev/null; then
   echo "✅ Neovim instalado com sucesso: $(nvim --version | head -n 1)"
