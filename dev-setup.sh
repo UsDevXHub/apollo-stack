@@ -139,6 +139,16 @@ echo 'eval "$(phpenv init -)"' >> ~/.zshrc
 echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
 echo '[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh' >> ~/.zshrc
 
+echo "🧙 Iniciando a configuração do Powerlevel10k..."
+
+# Garante que o Zsh esteja carregado com as configs do powerlevel10k
+if [ -f ~/.zshrc ]; then
+  # Executa um subshell do zsh com o tema já carregado e roda o configurador
+  zsh -i -c '[[ $(type -t p10k) == function ]] && p10k configure || echo "⚠️ Powerlevel10k não carregou completamente. Tente abrir um novo terminal e rodar p10k configure manualmente."'
+else
+  echo "⚠️ .zshrc não encontrado. Pulei a configuração automática do Powerlevel10k."
+fi
+
 # -------------------------
 # Finalização
 # -------------------------
