@@ -18,6 +18,23 @@ sudo apt install -y curl git unzip build-essential libssl-dev libreadline-dev zl
   libcurl4-openssl-dev
 
 # -------------------------
+# Instala Docker
+# -------------------------
+echo "🐳 Instalando Docker..."
+if ! command -v docker &> /dev/null; then
+sudo apt install -y curl apt-transport-https ca-certificates software-properties-common
+  sudo apt install -y docker.io
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  sudo apt update
+  sudo apt install -y docker-ce
+  sudo usermod -aG docker $USER
+  su $USER -c "newgrp docker"
+else
+  echo "Docker já está instalado."
+fi
+
+# -------------------------
 # Instala Git
 # -------------------------
 echo "🔧 Instalando Git..."
@@ -126,6 +143,7 @@ fi
 
 # Instala Powerlevel10k
 if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" ]; then
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
     ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 fi
