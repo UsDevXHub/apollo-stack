@@ -102,6 +102,16 @@ else
 fi
 
 # -------------------------
+# Instala ASDF
+# -------------------------
+if ! command -v asdf &> /dev/null; then
+  echo "🔧 Instalando ASDF..."
+  git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.13.1
+  echo -e '\n. "$HOME/.asdf/asdf.sh"' >> ~/.zshrc
+  echo -e '\n. "$HOME/.asdf/completions/asdf.bash"' >> ~/.zshrc
+fi
+
+# -------------------------
 # Zsh + Oh My Zsh + Powerlevel10k
 # -------------------------
 echo "🎨 Instalando Zsh e Powerlevel10k..."
@@ -119,6 +129,15 @@ if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" ]; then
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
     ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 fi
+
+echo -e '\n# ApolloStack Configuration' >> ~/.zshrc
+echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.zshrc
+echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ~/.zshrc
+echo 'export PHPENV_ROOT="$HOME/.phpenv"' >> ~/.zshrc
+echo 'export PATH="$PHPENV_ROOT/bin:$PATH"' >> ~/.zshrc
+echo 'eval "$(phpenv init -)"' >> ~/.zshrc
+echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
+echo '[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh' >> ~/.zshrc
 
 # -------------------------
 # Finalização
