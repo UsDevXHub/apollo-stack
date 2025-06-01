@@ -24,5 +24,7 @@ phpenv/
 *.zip
 *.tar.gz
 
+# JetBrains IDEs
+.idea/
 
 

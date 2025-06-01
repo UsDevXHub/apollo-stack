@@ -14,7 +14,8 @@ sudo apt update && sudo apt upgrade -y
 # -------------------------
 sudo apt install -y curl git unzip build-essential libssl-dev libreadline-dev zlib1g-dev \
   libsqlite3-dev libbz2-dev libffi-dev liblzma-dev libxml2-dev libxslt1-dev libncurses5-dev \
-  libncursesw5-dev xz-utils tk-dev software-properties-common libgdbm-dev libnss3-dev
+  libncursesw5-dev xz-utils tk-dev software-properties-common libgdbm-dev libnss3-dev \
+  libcurl4-openssl-dev
 
 # -------------------------
 # Instala Git
@@ -51,8 +52,8 @@ if [ ! -d "$(phpenv root)/plugins/php-build" ]; then
 fi
 
 # Instala PHP 8.2.17 como exemplo
-sudo apt install -y libtidy-dev libzip-dev libonig-dev
-phpenv install 8.2.17
+sudo apt install -y libcurl4-openssl-dev libreadline-dev libedit-dev libsqlite3-dev libonig-dev libzip-dev libssl-dev libjpeg-dev libpng-dev libxpm-dev libfreetype6-dev libxml2-dev libicu-dev libbz2-dev libtidy-dev libxslt1-dev libargon2-dev libdb-dev pkg-config re2c bison autoconf
+PHP_BUILD_CONFIGURE_OPTS="--enable-phar" phpenv install 8.2.17
 phpenv global 8.2.17
 
 # -------------------------
@@ -83,11 +84,11 @@ fi
 echo "🧠 Instalando Neovim..."
 
 NEOVIM_VERSION=$(curl -s https://api.github.com/repos/neovim/neovim/releases/latest | grep tag_name | cut -d '"' -f 4)
-curl -LO https://github.com/neovim/neovim/releases/download/${NEOVIM_VERSION}/nvim-linux64.tar.gz
-tar xzf nvim-linux64.tar.gz
-sudo mv nvim-linux64 /opt/nvim
-sudo ln -sf /opt/nvim/bin/nvim /usr/local/bin/nvim
-rm nvim-linux64.tar.gz
+curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+sudo rm -rf /opt/nvim
+sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
+export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+rm nvim-linux-x86_64.tar.gz
 
 # Verificação
 if command -v nvim &> /dev/null; then
